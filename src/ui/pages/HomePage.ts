@@ -1,16 +1,15 @@
 import { Locator, Page, expect } from "@playwright/test";
 import { HeaderComponent } from "../components/shared/HeaderComponent";
+import { BasePage } from "./BasePage";
 
-export class HomePage {
-    private readonly headerComponent: HeaderComponent
+export class HomePage extends BasePage {
 
-    constructor(private readonly page: Page) {
-        this.headerComponent = new HeaderComponent(page)
-
+    constructor(page: Page) {
+        super(page);
     }
-    getHeaderComponent() {
-        return this.headerComponent;
+
+    async open() {
+        await this.page.goto('/');
     }
-    
 
 }

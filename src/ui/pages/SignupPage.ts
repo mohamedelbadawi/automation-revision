@@ -1,7 +1,8 @@
 import { Page, Locator, expect } from "@playwright/test";
 import { User } from "../../data/users";
+import { BasePage } from "./BasePage";
 
-export class SignupPage {
+export class SignupPage extends BasePage {
     private readonly password: Locator;
     private readonly firstName: Locator;
     private readonly lastName: Locator;
@@ -24,6 +25,7 @@ export class SignupPage {
     private readonly offersCheckbox: Locator;
 
     constructor(readonly page: Page) {
+        super(page);
         this.firstName = page.getByTestId('first_name');
         this.lastName = page.getByTestId('last_name');
         this.password = page.getByTestId('password');

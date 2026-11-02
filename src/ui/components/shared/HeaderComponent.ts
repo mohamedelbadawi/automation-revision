@@ -12,11 +12,12 @@ export class HeaderComponent {
     readonly root: Locator;
     readonly isLoggedinLabel: Locator;
     readonly deleteAccountLink: Locator;
+    readonly logoutBtn: Locator;
     constructor(private page: Page) {
         this.root = this.page.locator('#header');
         this.isLoggedinLabel = this.root.getByText('Logged in as')
         this.deleteAccountLink = this.root.getByRole('link', { name: ' Delete Account' });
-
+        this.logoutBtn = this.root.getByRole('link', { name: ' Logout' })
     }
 
     async navigateTo(item: navItems) {
@@ -28,6 +29,12 @@ export class HeaderComponent {
 
     async expectLoggedInAs(name: string) {
         await expect(this.isLoggedinLabel).toHaveText(`Logged in as ${name}`)
+    }
+    async expectNotLoggedIn() {
+        await expect(this.isLoggedinLabel).toBeHidden();
+    }
+    async clickLogout() {
+        await this.logoutBtn.click();
     }
 }
 
