@@ -1,19 +1,13 @@
-import { SignupPage } from '../../src/ui/pages/SignupPage';
-import { AuthPage } from '../../src/ui/pages/AuthPage';
+
 import { getUserData } from '../../src/data/users';
-import { HomePage } from '../../src/ui/pages/HomePage';
-import { expect, test } from "../../src/fixtures/ads";
-import { createUser } from '../../src/api/services/userServices';
+import { expect, test } from "../../src/fixtures/index";
 import { getUniqueEmail } from '../../src/helpers/helper';
 
-test('Test Case 1: Register User', async ({ page }) => {
+test('Test Case 1: Register User', async ({ page, signupPage, homePage, authPage }) => {
     // get User
-    await page.goto('');
+    await homePage.open();
     const user = getUserData();
-    console.log(user.email, user.password);
-    const homePage = new HomePage(page);
-    const signupPage = new SignupPage(page);
-    const authPage = new AuthPage(page);
+
     // Navigate to Login page
     await homePage.header.navigateTo('login');
     await authPage.getSigupFormComponent().signup({ name: user.name, email: user.email });
@@ -27,13 +21,8 @@ test('Test Case 1: Register User', async ({ page }) => {
     await signupPage.expectAccountDeleted();
     await signupPage.clickContinueButton();
 });
-test("TC2: login", async ({ page, request }) => {
+test("TC2: login", async ({ user, signupPage, homePage, authPage }) => {
     // need to login first with API 
-    const user = getUserData();
-    const authPage = new AuthPage(page);
-    const signupPage = new SignupPage(page);
-    const homePage = new HomePage(page);
-    await createUser(request, user);
     await homePage.open();
     await homePage.header.navigateTo('login');
     await authPage.getLoginFormComponent().login({ email: user.email, password: user.password });
@@ -42,9 +31,8 @@ test("TC2: login", async ({ page, request }) => {
     await signupPage.expectAccountDeleted();
     await signupPage.clickContinueButton();
 })
-test("TC3: login with wrong credentials", async ({ page }) => {
-    const authPage = new AuthPage(page);
-    const homePage = new HomePage(page);
+test("TC3: login with wrong credentials", async ({ homePage, authPage }) => {
+
     await homePage.open();
     await homePage.header.navigateTo('login');
     await authPage.getLoginFormComponent().login({ email: getUniqueEmail(), password: '2194u812' });
@@ -52,12 +40,7 @@ test("TC3: login with wrong credentials", async ({ page }) => {
     await authPage.header.expectNotLoggedIn();
 })
 
-test('TC4: logout', async ({ page, request }) => {
-    const user = getUserData();
-    const authPage = new AuthPage(page);
-    const signupPage = new SignupPage(page);
-    const homePage = new HomePage(page);
-    await createUser(request, user);
+test('TC4: logout', async ({ user, homePage, authPage }) => {
     await homePage.open();
     await homePage.header.navigateTo('login');
     await authPage.getLoginFormComponent().login({ email: user.email, password: user.password });
@@ -67,3 +50,10 @@ test('TC4: logout', async ({ page, request }) => {
 
 })
 
+test('TC5: Register with an existing email', async ({ page, user, homePage, authPage }) => {
+    await homePage.open();
+    await homePage.header.navigateTo('login');
+    await authPage.getSigupFormComponent().signup({ name: user.name, email: user.email });
+    await authPage.getSigupFormComponent().expectErrorMessage();
+
+})

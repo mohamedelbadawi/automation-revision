@@ -27,3 +27,17 @@ export async function createUser(request: APIRequestContext, user: User) {
     expect(jsonResponse.message).toBe('User created!');
     return jsonResponse;
 }
+
+export async function deleteUser(request: APIRequestContext, user: User) {
+
+    const response = await request.delete('/api/deleteAccount', {
+        form: {
+            email: user.email,
+            password: user.password
+        }
+    })
+    const jsonResponse: { responseCode: number, message: string } = await response.json()
+    expect([200, 404]).toContain(jsonResponse.responseCode);
+    expect(['Account not found!', 'Account deleted!']).toContain(jsonResponse.message);
+    return jsonResponse;
+}
