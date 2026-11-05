@@ -11,5 +11,8 @@ export class HomePage extends BasePage {
     async open() {
         await this.page.goto('/');
     }
+    async expectLoaded() {
+        await expect(this.page).toHaveURL('');
+    }
 
 }
