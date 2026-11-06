@@ -6,6 +6,9 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "types": ["node"],
+    "paths": {
+      "@fixtures/*": ["./src/fixtures/*"]
+    },
     "forceConsistentCasingInFileNames": true
   },
   "include": ["src/**/*", "tests/**/*", "e2e/**/*", "playwright.config.ts"]

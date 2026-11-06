@@ -6,4 +6,5 @@ import { expect } from "@playwright/test";
 
 const test = mergeTests(pageTest, adsTest, userTest)
 
-export { test, expect }
+export { test, expect };
+export default test;
