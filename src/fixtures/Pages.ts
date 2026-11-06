@@ -6,13 +6,15 @@ import { HomePage } from "../ui/pages/HomePage";
 import { ContactUsPage } from "../ui/pages/ContactUsPage";
 import { ProductsPage } from "../ui/pages/ProductsPage";
 import { ProductDetailsPage } from "../ui/pages/ProductDetailsPage";
+import { CartPage } from "../ui/pages/CartPage";
 type Pages = {
     authPage: AuthPage;
     signupPage: SignupPage;
     homePage: HomePage;
     contactUsPage: ContactUsPage
     productsPage: ProductsPage,
-    productDetailsPage: ProductDetailsPage
+    productDetailsPage: ProductDetailsPage,
+    cartPage: CartPage
 }
 export const pageTest = base.extend<Pages>({
     authPage: async ({ page }, use) => {
@@ -38,6 +40,10 @@ export const pageTest = base.extend<Pages>({
     productDetailsPage: async ({ page }, use) => {
         const productDetailsPage = new ProductDetailsPage(page);
         await use(productDetailsPage);
+    },
+    cartPage: async ({ page }, use) => {
+        const cartPage = new CartPage(page);
+        await use(cartPage);
     }
 
 })
