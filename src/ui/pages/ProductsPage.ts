@@ -3,6 +3,7 @@ import { ProductCardComponent } from "../components/product/ProductCardComponent
 import { HeaderComponent } from "../components/shared/HeaderComponent";
 import { BasePage } from "./BasePage";
 import { expect } from "playwright/test";
+import { AddedToCartModalComponent } from "../components/shared/AddedToCartModalComponent";
 
 export class ProductsPage extends BasePage {
     private readonly productsHeader: Locator;
@@ -10,6 +11,7 @@ export class ProductsPage extends BasePage {
     private readonly cards: Locator;
     private readonly searchInput: Locator;
     private readonly searchButton: Locator;
+    readonly addedToCartModal: AddedToCartModalComponent;
     constructor(page: Page) {
         super(page);
         this.productSection = this.page.locator('.features_items');
@@ -17,6 +19,8 @@ export class ProductsPage extends BasePage {
         this.cards = this.page.locator('.product-image-wrapper');
         this.searchInput = this.page.locator('#search_product');
         this.searchButton = this.page.locator('#submit_search');
+        this.addedToCartModal = new AddedToCartModalComponent(page);
+
     }
 
     async expectLoaded() {

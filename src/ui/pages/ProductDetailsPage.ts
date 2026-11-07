@@ -1,6 +1,7 @@
 import { Locator, Page } from "playwright";
 import { BasePage } from "./BasePage";
 import { expect } from "playwright/test";
+import { AddedToCartModalComponent } from "../components/shared/AddedToCartModalComponent";
 
 export class ProductDetailsPage extends BasePage {
     private readonly price: Locator;
@@ -10,6 +11,10 @@ export class ProductDetailsPage extends BasePage {
     private readonly condition: Locator;
     private readonly brand: Locator;
     private readonly productInfo: Locator;
+    private readonly qtyInput: Locator;
+    private readonly addToCartButton: Locator;
+    readonly addedToCartModal: AddedToCartModalComponent;
+
     constructor(page: Page) {
         super(page);
         this.productInfo = this.page.locator(".product-information");
@@ -19,6 +24,9 @@ export class ProductDetailsPage extends BasePage {
         this.availability = this.productInfo.getByText("Availability:");
         this.condition = this.productInfo.getByText("Condition:");
         this.brand = this.productInfo.getByText("Brand:")
+        this.qtyInput = this.productInfo.locator("#quantity");
+        this.addToCartButton = this.productInfo.getByRole('button', { name: "Add to cart" });
+        this.addedToCartModal = new AddedToCartModalComponent(this.page);
     }
 
     async expectProductNameIsVisible() {
@@ -43,6 +51,13 @@ export class ProductDetailsPage extends BasePage {
 
     async expectBrandIsVisible() {
         await expect(this.brand).toBeVisible();
+    }
+    async updateQuantity(qty: number) {
+        await this.qtyInput.fill(qty.toString());
+    }
+    async addToCart() {
+
+        await this.addToCartButton.click();
     }
 
     async expectAllElementsAreVisible() {

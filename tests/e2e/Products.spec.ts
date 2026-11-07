@@ -1,4 +1,5 @@
 import { test, expect } from "@fixtures/index";
+import { getPriceWithoutCurrency } from "../../src/helpers/helper";
 test('TC8 : Verify All Products and product detail page', async ({ page, homePage, productsPage, productDetailsPage }) => {
     await homePage.open();
     await homePage.header.navigateTo('products');
@@ -17,3 +18,4 @@ test("TC9:Search Product", async ({ page, homePage, productsPage }) => {
     await productsPage.expectAllProductsNameContain("blue")
 
 })
+
