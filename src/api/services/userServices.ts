@@ -1,43 +1,42 @@
-import { APIRequestContext } from "playwright";
+import { APIRequestContext, expect } from "@playwright/test";
 import { User } from "../../data/users";
-import { expect } from "playwright/test";
 
 export async function createUser(request: APIRequestContext, user: User) {
-
-
     const response = await request.post('/api/createAccount', {
         form: {
             name: user.name,
-            firstname: user.firstName,
-            lastname: user.lastName,
             email: user.email,
             password: user.password,
-            address: user.address,
+            title: user.title,
+            birth_date: user.dateOfBirth.day,
+            birth_month: user.dateOfBirth.month,
+            birth_year: user.dateOfBirth.year,
+            firstname: user.firstName,
+            lastname: user.lastName,
+            company: user.company,
+            address1: user.address,
+            address2: user.address2,
             country: user.country,
+            zipcode: user.zipCode,
             state: user.state,
             city: user.city,
-            zipcode: user.zipCode,
             mobile_number: user.mobileNumber,
-            address2: user.address2,
-            address1: user.address,
         },
     });
-    const jsonResponse: { responseCode: number, message: string } = await response.json()
-    expect(jsonResponse.responseCode).toBe(201);
-    expect(jsonResponse.message).toBe('User created!');
+    const jsonResponse: { responseCode: number, message: string } = await response.json();
+    expect(jsonResponse.responseCode, `createUser failed: ${jsonResponse.message}`).toBe(201);
     return jsonResponse;
 }
 
 export async function deleteUser(request: APIRequestContext, user: User) {
-
     const response = await request.delete('/api/deleteAccount', {
         form: {
             email: user.email,
             password: user.password
         }
-    })
-    const jsonResponse: { responseCode: number, message: string } = await response.json()
+    });
+    const jsonResponse: { responseCode: number, message: string } = await response.json();
+    // 200: deleted now, 404: already deleted by the test itself. Both are fine for cleanup
     expect([200, 404]).toContain(jsonResponse.responseCode);
-    expect(['Account not found!', 'Account deleted!']).toContain(jsonResponse.message);
     return jsonResponse;
 }

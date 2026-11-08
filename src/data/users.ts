@@ -2,7 +2,7 @@ import { getUniqueEmail } from "../helpers/helper";
 
 
 export type User = {
-    title: "Mr." | "Mrs.";
+    title: "Mr" | "Mrs";
     name: string;
     firstName: string;
     lastName: string;
@@ -27,7 +27,7 @@ export type User = {
 
 export function getUserData(): User {
     return {
-        title: "Mr.",
+        title: "Mr",
         name: "Mohamed",
         firstName: "Mohamed",
         lastName: "Ahmed",

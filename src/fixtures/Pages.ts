@@ -7,6 +7,9 @@ import { ContactUsPage } from "../ui/pages/ContactUsPage";
 import { ProductsPage } from "../ui/pages/ProductsPage";
 import { ProductDetailsPage } from "../ui/pages/ProductDetailsPage";
 import { CartPage } from "../ui/pages/CartPage";
+import { CheckoutPage } from "../ui/pages/CheckoutPage";
+import { PaymentPage } from "../ui/pages/PaymentPage";
+import { OrderPlacedPage } from "../ui/pages/OrderPlacedPage";
 type Pages = {
     authPage: AuthPage;
     signupPage: SignupPage;
@@ -14,7 +17,10 @@ type Pages = {
     contactUsPage: ContactUsPage
     productsPage: ProductsPage,
     productDetailsPage: ProductDetailsPage,
-    cartPage: CartPage
+    cartPage: CartPage,
+    checkoutPage: CheckoutPage,
+    paymentPage: PaymentPage,
+    orderPlacedPage: OrderPlacedPage
 }
 export const pageTest = base.extend<Pages>({
     authPage: async ({ page }, use) => {
@@ -44,6 +50,16 @@ export const pageTest = base.extend<Pages>({
     cartPage: async ({ page }, use) => {
         const cartPage = new CartPage(page);
         await use(cartPage);
+    },
+    checkoutPage: async ({ page }, use) => {
+        const checkoutPage = new CheckoutPage(page);
+        await use(checkoutPage);
+    },
+    paymentPage: async ({ page }, use) => {
+        await use(new PaymentPage(page));
+    },
+    orderPlacedPage: async ({ page }, use) => {
+        await use(new OrderPlacedPage(page));
     }
 
 })

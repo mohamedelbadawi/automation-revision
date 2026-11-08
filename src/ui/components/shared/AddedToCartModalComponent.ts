@@ -17,8 +17,7 @@ export class AddedToCartModalComponent {
     }
 
     async viewCart() {
-        await expect(this.root).toBeVisible();
-
+        await expect(this.root).toHaveClass("modal show");
         await this.viewCartButton.click();
     }
 }

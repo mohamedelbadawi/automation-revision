@@ -21,8 +21,8 @@ test("TC12: Add products to cart", async ({ homePage, productsPage, cartPage, pa
     await secondProduct.addToCart();
     await productsPage.addedToCartModal.viewCart()
     await cartPage.expectLoaded();
-    await cartPage.cartTableComponenet.expectProduct({ name: products[0].name, price: products[0].price, quantity: 1 });
-    await cartPage.cartTableComponenet.expectProduct({ name: products[1].name, price: products[1].price, quantity: 1 });
+    await cartPage.cartTable.expectProduct({ name: products[0].name, price: products[0].price, quantity: 1 });
+    await cartPage.cartTable.expectProduct({ name: products[1].name, price: products[1].price, quantity: 1 });
 })
 
 test("TC13:Verify Product quantity in Cart", async ({ homePage, cartPage, productDetailsPage, page }) => {
@@ -34,5 +34,5 @@ test("TC13:Verify Product quantity in Cart", async ({ homePage, cartPage, produc
     await productDetailsPage.updateQuantity(4);
     await productDetailsPage.addToCart();
     await productDetailsPage.addedToCartModal.viewCart();
-    await cartPage.cartTableComponenet.expectProduct({ name: productName, price: getPriceWithoutCurrency(productPrice), quantity: 4 });
+    await cartPage.cartTable.expectProduct({ name: productName, price: getPriceWithoutCurrency(productPrice), quantity: 4 });
 })
