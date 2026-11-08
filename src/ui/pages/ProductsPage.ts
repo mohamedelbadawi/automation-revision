@@ -4,6 +4,7 @@ import { HeaderComponent } from "../components/shared/HeaderComponent";
 import { BasePage } from "./BasePage";
 import { expect } from "playwright/test";
 import { AddedToCartModalComponent } from "../components/shared/AddedToCartModalComponent";
+import { ProductSidebarComponent } from "../components/shared/ProductSidebarComponent";
 
 export class ProductsPage extends BasePage {
     private readonly productsHeader: Locator;
@@ -12,6 +13,7 @@ export class ProductsPage extends BasePage {
     private readonly searchInput: Locator;
     private readonly searchButton: Locator;
     readonly addedToCartModal: AddedToCartModalComponent;
+    readonly productSidebarComponent: ProductSidebarComponent;
     constructor(page: Page) {
         super(page);
         this.productSection = this.page.locator('.features_items');
@@ -20,6 +22,7 @@ export class ProductsPage extends BasePage {
         this.searchInput = this.page.locator('#search_product');
         this.searchButton = this.page.locator('#submit_search');
         this.addedToCartModal = new AddedToCartModalComponent(page);
+        this.productSidebarComponent=new ProductSidebarComponent(page);
 
     }
 
@@ -35,6 +38,9 @@ export class ProductsPage extends BasePage {
     }
     async expectSearchedProductsHeading() {
         await expect(this.productsHeader).toHaveText(`Searched Products`);
+    }
+    async expectHeadingContain(category: string) {
+        await expect(this.productsHeader).toContainText(category);
     }
 
     async getAllProducts() {
