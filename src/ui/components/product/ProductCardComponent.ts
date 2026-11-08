@@ -22,7 +22,6 @@ export class ProductCardComponent {
     async addToCart() {
 
         await this.addToCartButton.click();
-        await this.root.page().waitForResponse(res => res.url().includes('/add_to_cart/'));
     }
     async viewProduct() {
         await this.viewPorduct.click();

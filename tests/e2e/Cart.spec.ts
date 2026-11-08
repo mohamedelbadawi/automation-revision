@@ -1,5 +1,6 @@
 import { test } from "@fixtures/index";
 import { getPriceWithoutCurrency } from "../../src/helpers/helper";
+import { AddedToCartModalComponent } from "../../src/ui/components/shared/AddedToCartModalComponent";
 
 test("TC12: Add products to cart", async ({ homePage, productsPage, cartPage, page }) => {
     await homePage.open();
@@ -35,4 +36,23 @@ test("TC13:Verify Product quantity in Cart", async ({ homePage, cartPage, produc
     await productDetailsPage.addToCart();
     await productDetailsPage.addedToCartModal.viewCart();
     await cartPage.cartTable.expectProduct({ name: productName, price: getPriceWithoutCurrency(productPrice), quantity: 4 });
+})
+
+test("TC:17 Verify that user can remove product from cart", async ({ homePage, cartPage, page }) => {
+    await homePage.open();
+    const product = homePage.nthProductCard(1);
+    const productName = await product.getProductName();
+    const productPrice = await product.getProductPrice();
+    await product.addToCart();
+    await homePage.addedToCartModal.continueShopping();
+    const secondProduct = homePage.nthProductCard(2)
+    const secondProductName = await secondProduct.getProductName();
+    const secondProductPrice = await secondProduct.getProductPrice();
+    await secondProduct.addToCart();
+    await homePage.addedToCartModal.viewCart();
+    await cartPage.expectLoaded();
+    await cartPage.cartTable.expectProduct({ name: productName, price: getPriceWithoutCurrency(productPrice), quantity: 1 });
+    await cartPage.cartTable.removeProduct(productName);
+    await cartPage.cartTable.expectProductNotExist(productName);
+    await cartPage.cartTable.expectProduct({ name: secondProductName, price: getPriceWithoutCurrency(secondProductPrice), quantity: 1 });
 })
