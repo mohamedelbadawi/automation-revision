@@ -8,6 +8,7 @@ export class ReviewFormComponent {
     private readonly reviewInput: Locator;
     private readonly submitButton: Locator;
     private readonly header: Locator;
+    private readonly successMessage: Locator;
 
 
     constructor(page: Page) {
@@ -17,6 +18,7 @@ export class ReviewFormComponent {
         this.reviewInput = this.root.locator("#review");
         this.submitButton = this.root.locator("#button-review");
         this.header = this.root.locator("li.active a");
+        this.successMessage = this.root.locator(".alert.alert-success");
     }
 
     async fillReviewForm(name: string, email: string, review: string): Promise<void> {
@@ -28,8 +30,11 @@ export class ReviewFormComponent {
     async submitReview(): Promise<void> {
         await this.submitButton.click();
     }
-    async reviewSectionHeader() {
+    async expectReviewSectionHeader() {
         await expect(this.header).toContainText("Write Your Review")
+    }
+    async expectReviewSubmittedSuccessfully() {
+        await expect(this.successMessage).toContainText("Thank you for your review.");
     }
 
 }

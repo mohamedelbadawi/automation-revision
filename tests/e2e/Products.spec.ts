@@ -19,3 +19,13 @@ test("TC9:Search Product", async ({ page, homePage, productsPage }) => {
 
 })
 
+test("TC21: Add review on product", async ({ page, homePage, productsPage, productDetailsPage }) => {
+    await homePage.open();
+    await homePage.header.navigateTo("products");
+    await productsPage.expectLoaded();
+    await productsPage.nthProductCard(1).viewProduct();
+    await productDetailsPage.reviewFormComponent.expectReviewSectionHeader();
+    await productDetailsPage.reviewFormComponent.fillReviewForm("John Doe", "m@m.com", "This is a great product");
+    await productDetailsPage.reviewFormComponent.submitReview();
+    await productDetailsPage.reviewFormComponent.expectReviewSubmittedSuccessfully();
+})
