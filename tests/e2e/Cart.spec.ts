@@ -80,3 +80,4 @@ test("TC:20 Search Products and Verify Cart After Login", async ({ page, homePag
     await cartPage.expectLoaded();
     await cartPage.cartTable.expectProduct({ name: firstProductName, price: getPriceWithoutCurrency(firstProductPrice), quantity: 1 });
 })
+

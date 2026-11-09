@@ -143,3 +143,38 @@ test.describe('Place order', () => {
         });
     });
 });
+
+test("Test Case 23: Verify address details in checkout page", async ({ newUser, homePage, cartPage, authPage, signupPage, checkoutPage, paymentPage, orderPlacedPage, }) => {
+    const product = homePage.nthProductCard(1);
+    let productName = '';
+    let productPrice = 0;
+    await test.step('Register', async () => {
+        await homePage.open();
+        await homePage.header.navigateTo('login');
+        await authPage.getSigupFormComponent().signup({ name: newUser.name, email: newUser.email });
+        await signupPage.fillAccountInfo(newUser);
+        await signupPage.clickCreateAccount();
+        await signupPage.expectAccountCreated();
+        await signupPage.clickContinueButton();
+        await homePage.header.expectLoggedInAs(newUser.name);
+    });
+
+    await test.step('Add a product to cart', async () => {
+        productName = await product.getProductName();
+        productPrice = getPriceWithoutCurrency(await product.getProductPrice());
+        await product.addToCart();
+        await homePage.addedToCartModal.viewCart();
+        await cartPage.expectLoaded();
+    });
+
+    await test.step('Review and place order', async () => {
+        await cartPage.clickCheckout();
+        await checkoutPage.deliveryAddress.expectAddress(newUser);
+        await checkoutPage.billingAddress.expectAddress(newUser);
+    });
+    await test.step("Delete Account", async () => {
+        await checkoutPage.header.clickDeleteAccount();
+        await signupPage.expectAccountDeleted();
+        await signupPage.clickContinueButton();
+    })
+})

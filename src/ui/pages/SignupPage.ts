@@ -50,7 +50,7 @@ export class SignupPage extends BasePage {
 
     }
     async fillAccountInfo(user: User) {
-        await this.page.getByLabel(user.title).check();
+        await this.page.getByLabel(`${user.title}.`).check();
         await this.firstName.pressSequentially(user.firstName);
         await this.lastName.pressSequentially(user.lastName);
         await this.password.pressSequentially(user.password);

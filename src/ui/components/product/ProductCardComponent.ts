@@ -20,8 +20,11 @@ export class ProductCardComponent {
         return (await this.price.textContent()) as string;
     }
     async addToCart() {
-
+        const page = this.root.page();
+        await page.waitForLoadState('load');
+        const added = page.waitForResponse(res => res.url().includes('/add_to_cart/'));
         await this.addToCartButton.click();
+        await added;
     }
     async viewProduct() {
         await this.viewPorduct.click();
