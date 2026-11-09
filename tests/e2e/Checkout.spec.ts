@@ -178,3 +178,42 @@ test("Test Case 23: Verify address details in checkout page", async ({ newUser, 
         await signupPage.clickContinueButton();
     })
 })
+
+
+test("Test Case 24: Download Invoice after purchase order", async ({ page, user, homePage, cartPage, authPage, signupPage, checkoutPage, paymentPage, orderPlacedPage }) => {
+    const product = homePage.nthProductCard(1);
+    let productName = '';
+    let productPrice = 0;
+
+    await test.step('Login', async () => {
+        await homePage.open();
+        await homePage.header.navigateTo('login');
+        await authPage.getLoginFormComponent().login({ email: user.email, password: user.password });
+        await homePage.header.expectLoggedInAs(user.name);
+    });
+
+    await test.step('Add a product to cart', async () => {
+        productName = await product.getProductName();
+        productPrice = getPriceWithoutCurrency(await product.getProductPrice());
+        await product.addToCart();
+        await homePage.addedToCartModal.viewCart();
+        await cartPage.expectLoaded();
+    });
+
+    await test.step('Review and place order', async () => {
+        await cartPage.clickCheckout();
+        await checkoutPage.deliveryAddress.expectAddress(user);
+        await checkoutPage.billingAddress.expectAddress(user);
+        await checkoutPage.orderTable.expectProduct({ name: productName, price: productPrice, quantity: 1 });
+        await checkoutPage.addComment('Please deliver in the morning');
+        await checkoutPage.placeOrder();
+    });
+
+    await test.step('Pay', async () => {
+        await paymentPage.pay(getCardData());
+        await orderPlacedPage.expectOrderPlaced();
+    });
+    await test.step('Download Invoice', async () => {
+        await orderPlacedPage.downloadAndExpectInvoice(user.name, productPrice);
+    });
+})

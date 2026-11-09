@@ -15,7 +15,7 @@ export class CheckoutPage extends BasePage {
         this.deliveryAddress = new AddressComponent(page.locator('#address_delivery'));
         this.billingAddress = new AddressComponent(page.locator('#address_invoice'));
         this.orderTable = new CartTableComponent(page.locator('#cart_info'));
-        // CSS: textarea has no label
+      
         this.commentInput = page.locator('textarea[name="message"]');
         this.placeOrderButton = page.getByRole('link', { name: 'Place Order' });
     }
