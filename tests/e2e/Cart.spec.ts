@@ -1,6 +1,7 @@
 import { test } from "@fixtures/index";
 import { getPriceWithoutCurrency } from "../../src/helpers/helper";
 import { AddedToCartModalComponent } from "../../src/ui/components/shared/AddedToCartModalComponent";
+import { getUserData } from "../../src/data/users";
 
 test("TC12: Add products to cart", async ({ homePage, productsPage, cartPage, page }) => {
     await homePage.open();
@@ -55,4 +56,27 @@ test("TC:17 Verify that user can remove product from cart", async ({ homePage, c
     await cartPage.cartTable.removeProduct(productName);
     await cartPage.cartTable.expectProductNotExist(productName);
     await cartPage.cartTable.expectProduct({ name: secondProductName, price: getPriceWithoutCurrency(secondProductPrice), quantity: 1 });
+})
+
+test("TC:20 Search Products and Verify Cart After Login", async ({ page, homePage, productsPage, cartPage, authPage, user }) => {
+    await homePage.open();
+    await homePage.header.navigateTo('products');
+    await productsPage.expectLoaded();
+    await productsPage.search('blue');
+    await productsPage.expectSearchedProductsHeading();
+    const firstProduct = productsPage.nthProductCard(1);
+    const firstProductPrice = await firstProduct.getProductPrice();
+    const firstProductName = await firstProduct.getProductName();
+    await firstProduct.addToCart();
+    await homePage.addedToCartModal.viewCart();
+    await cartPage.cartTable.expectProduct({ name: firstProductName, price: getPriceWithoutCurrency(firstProductPrice), quantity: 1 });
+
+    await cartPage.expectLoaded();
+    await cartPage.header.navigateTo('login');
+
+    await authPage.getLoginFormComponent().login(user);
+    await homePage.header.expectLoggedInAs(user.name);
+    await homePage.header.navigateTo('cart');
+    await cartPage.expectLoaded();
+    await cartPage.cartTable.expectProduct({ name: firstProductName, price: getPriceWithoutCurrency(firstProductPrice), quantity: 1 });
 })

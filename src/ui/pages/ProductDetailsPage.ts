@@ -2,6 +2,7 @@ import { Locator, Page } from "playwright";
 import { BasePage } from "./BasePage";
 import { expect } from "playwright/test";
 import { AddedToCartModalComponent } from "../components/shared/AddedToCartModalComponent";
+import { ReviewFormComponent } from "../components/product/ReviewFormComponent";
 
 export class ProductDetailsPage extends BasePage {
     private readonly price: Locator;
@@ -14,6 +15,7 @@ export class ProductDetailsPage extends BasePage {
     private readonly qtyInput: Locator;
     private readonly addToCartButton: Locator;
     readonly addedToCartModal: AddedToCartModalComponent;
+    readonly reviewFormComponent: ReviewFormComponent;
 
     constructor(page: Page) {
         super(page);
@@ -27,6 +29,7 @@ export class ProductDetailsPage extends BasePage {
         this.qtyInput = this.productInfo.locator("#quantity");
         this.addToCartButton = this.productInfo.getByRole('button', { name: "Add to cart" });
         this.addedToCartModal = new AddedToCartModalComponent(this.page);
+        this.reviewFormComponent = new ReviewFormComponent(this.page);
     }
 
     async expectProductNameIsVisible() {
