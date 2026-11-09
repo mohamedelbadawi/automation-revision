@@ -4,17 +4,20 @@ import { BasePage } from "./BasePage";
 import { AddedToCartModalComponent } from "../components/shared/AddedToCartModalComponent";
 import { ProductCardComponent } from "../components/product/ProductCardComponent";
 import { ProductSidebarComponent } from "../components/shared/ProductSidebarComponent";
+import { RecommendedItemsComponent } from "../components/home/RecommendedItemsComponent";
 
 export class HomePage extends BasePage {
 
     readonly addedToCartModal: AddedToCartModalComponent;
     readonly productSideBar: ProductSidebarComponent;
+    readonly recommendedItemsComponent: RecommendedItemsComponent;
     readonly cards: Locator;
     constructor(page: Page) {
         super(page);
         this.addedToCartModal = new AddedToCartModalComponent(page);
         this.cards = this.page.locator('.product-image-wrapper');
         this.productSideBar = new ProductSidebarComponent(page);
+        this.recommendedItemsComponent = new RecommendedItemsComponent(page);
     }
 
 

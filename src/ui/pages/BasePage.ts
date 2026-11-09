@@ -10,5 +10,12 @@ export class BasePage {
         this.subscriptionFooter = new SubscriptionFooterComponent(page);
     }
 
+    // scroll down to bottom of the page
+    async scrollToBottom() {
+        await this.page.evaluate(() => {
+            window.scrollTo(0, document.body.scrollHeight);
+        });
+    }
+    
 
 }
