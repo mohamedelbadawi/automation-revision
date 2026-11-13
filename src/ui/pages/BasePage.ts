@@ -16,6 +16,7 @@ export class BasePage {
             window.scrollTo(0, document.body.scrollHeight);
         });
     }
-    
+
+
 
 }
